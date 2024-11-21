@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:24:48 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/21 17:00:25 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/21 21:42:00 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,24 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*read_line(int fd, char *str)
+ssize_t	read_line(int fd, char **str)
 {
 	char	buff[BUFFER_SIZE];
 	ssize_t	read_size;
 	char	*res;
-
-	read_size = read(fd, buff, BUFFER_SIZE - 1);
-    if (read_size <= 0)
-        return (free(str), NULL);
-	buff[read_size] = '\0';
-	res = ft_strjoin(str, buff);
-	free(str);
+	
+	read_size = read(fd, buff, BUFFER_SIZE);
+	if (read_size <= 0)
+		return (read_size);
+	res = malloc((read_size + 1) * sizeof(char));
 	if (!res)
-		return (NULL);
-	return (res);
+		return (free(*str), 0);
+	ft_strlcpy(res, buff, read_size + 1);
+	free(*str);
+	*str = ft_strjoin(*str, res);
+	if (!str)
+		return (0);
+	return (read_size);
 }
 
 char	*remove_overflow(char	*str)
@@ -81,22 +84,19 @@ char	*get_next_line(int fd)
 {
 	static char	*str;
 	char		*res;
+	ssize_t		read_size;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 10000000  || read(fd, 0, 0) < 0)
 		return (NULL);
 	if (str == NULL)
 		str = ft_strdup("");
-	while (str != NULL && !ft_strchr(str, '\n'))
+	while (!ft_strchr(str, '\n'))
 	{
-		str = read_line(fd, str);
-		if (!str)
-			return (NULL);
+		read_size = read_line(fd, &str);
+		if (read_size <= 0)
+			break ;
 	}
-	if (!str)
-		return (NULL);
 	res = remove_overflow(str);
 	str = start_next_line(str);
-
 	return (res);
 }
-
