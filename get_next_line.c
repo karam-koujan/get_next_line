@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:24:48 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/21 15:31:59 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/21 17:00:25 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ char	*read_line(int fd, char *str)
 	char	*res;
 
 	read_size = read(fd, buff, BUFFER_SIZE - 1);
-	if (!read_size)
-		return (free(str), NULL);
+    if (read_size <= 0)
+        return (free(str), NULL);
 	buff[read_size] = '\0';
 	res = ft_strjoin(str, buff);
 	free(str);
 	if (!res)
-		return (free(res), free(str), NULL);
+		return (NULL);
 	return (res);
 }
 
@@ -73,6 +73,7 @@ char	*start_next_line(char	*str)
 	if (!res)
 		return (free(str), NULL);
 	ft_strlcpy(res, str + i, i - ft_strlen(str) + 1);
+	free(str);
 	return (res);
 }
 
@@ -88,14 +89,14 @@ char	*get_next_line(int fd)
 	while (str != NULL && !ft_strchr(str, '\n'))
 	{
 		str = read_line(fd, str);
+		if (!str)
+			return (NULL);
 	}
 	if (!str)
 		return (NULL);
 	res = remove_overflow(str);
-	if (!res)
-		return (free(res), NULL);
 	str = start_next_line(str);
-	if (!str)
-		return (free(str), NULL);
+
 	return (res);
 }
+
