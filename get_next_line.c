@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:24:48 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/22 23:29:51 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/22 23:33:15 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*get_next_line(int fd)
 	char		*res;
 	ssize_t		read_size;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 10000000 \
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX \
 	|| read(fd, NULL, 0) < 0)
 		return (free(str), str = NULL, NULL);
 	while (!ft_strchr(str, '\n'))
