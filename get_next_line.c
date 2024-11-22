@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:24:48 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/22 20:11:58 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/22 23:29:51 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,22 @@ size_t	ft_strlen(const char *s)
 
 ssize_t	read_line(int fd, char **str)
 {
-	char	buff[BUFFER_SIZE + 1];
+	char	*buff;
 	ssize_t	read_size;
 	char	*tmp;
 
+	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buff)
+		return (free(*str), *str = NULL, -1);
 	read_size = read(fd, buff, BUFFER_SIZE);
 	if (read_size <= 0)
-		return (read_size);
+		return (free(buff), read_size);
 	buff[read_size] = '\0';
 	tmp = ft_strjoin(*str, buff);
 	if (!tmp)
-		return (free(*str), *str = NULL, -1);
+		return (free(*str), free(buff), *str = NULL, -1);
 	free(*str);
+	free(buff);
 	*str = tmp;
 	return (read_size);
 }
