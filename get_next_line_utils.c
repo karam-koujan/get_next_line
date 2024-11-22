@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:25:27 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/21 14:31:07 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:08:46 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strchr(const char *s, int c)
 
 	p = (char *)s;
 	c = (char)c;
+	if (s == NULL)
+		return (0);
 	while (*p)
 	{
 		if (*p == c)

@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:25:24 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/21 21:12:24 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:10:39 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
-#include <limits.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 12

@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:24:48 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/22 18:06:14 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:11:58 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ ssize_t	read_line(int fd, char **str)
 	char	buff[BUFFER_SIZE + 1];
 	ssize_t	read_size;
 	char	*tmp;
-	
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 10000000 \
-	|| read(fd, 0, 0) < 0)
-		return (free(*str), *str = NULL, -1);
+
 	read_size = read(fd, buff, BUFFER_SIZE);
 	if (read_size <= 0)
 		return (read_size);
@@ -89,12 +86,9 @@ char	*get_next_line(int fd)
 	char		*res;
 	ssize_t		read_size;
 
-	if (!str)
-	{
-		str = ft_strdup("");
-		if (!str)
-			return (NULL);		
-	}
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 10000000 \
+	|| read(fd, NULL, 0) < 0)
+		return (free(str), str = NULL, NULL);
 	while (!ft_strchr(str, '\n'))
 	{
 		read_size = read_line(fd, &str);
@@ -104,7 +98,7 @@ char	*get_next_line(int fd)
 			break ;
 	}
 	if (!str || !*str)
-		return (free(str), str = NULL, NULL);	
+		return (free(str), str = NULL, NULL);
 	res = remove_overflow(str);
 	if (!res)
 		return (free(str), str = NULL, NULL);
