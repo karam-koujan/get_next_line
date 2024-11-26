@@ -6,12 +6,12 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:46:52 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/26 15:56:11 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/26 20:04:04 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <unistd.h>
 # include <fcntl.h>

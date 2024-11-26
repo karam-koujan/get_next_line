@@ -6,7 +6,7 @@
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 17:44:57 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/26 18:42:38 by kkoujan          ###   ########.fr       */
+/*   Updated: 2024/11/26 20:05:04 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,10 @@ char	*get_next_line(int fd)
 	char		*res;
 	ssize_t		read_size;
 
+	if (read(fd, NULL, 0) < 0)
+		return (free(str[fd]), str[fd] = NULL, NULL);
 	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX \
-	|| read(fd, NULL, 0) < 0 || fd > FD_SETSIZE)
+	|| fd > FD_SETSIZE)
 		return (NULL);
 	while (!ft_strchr(str[fd], '\n'))
 	{
@@ -109,10 +111,3 @@ char	*get_next_line(int fd)
 	str[fd] = start_next_line(str[fd]);
 	return (res);
 }
-
-// #include <stdio.h>
-// int main(int ac, char **av)
-// {
-
-// 	printf("%s",get_next_line(0));
-// }
