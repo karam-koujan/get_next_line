@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kkoujan <kkoujan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/20 12:24:48 by kkoujan           #+#    #+#             */
-/*   Updated: 2024/11/26 17:50:43 by kkoujan          ###   ########.fr       */
+/*   Created: 2024/11/25 17:44:57 by kkoujan           #+#    #+#             */
+/*   Updated: 2024/11/26 18:42:38 by kkoujan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -86,26 +86,33 @@ char	*start_next_line(char	*str)
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
+	static char	*str[FD_SETSIZE];
 	char		*res;
 	ssize_t		read_size;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= INT_MAX \
-	|| read(fd, NULL, 0) < 0)
-		return (free(str), str = NULL, NULL);
-	while (!ft_strchr(str, '\n'))
+	|| read(fd, NULL, 0) < 0 || fd > FD_SETSIZE)
+		return (NULL);
+	while (!ft_strchr(str[fd], '\n'))
 	{
-		read_size = read_line(fd, &str);
+		read_size = read_line(fd, &str[fd]);
 		if (read_size < 0)
-			return (free(str), str = NULL, NULL);
+			return (free(str[fd]), str[fd] = NULL, NULL);
 		if (read_size == 0)
 			break ;
 	}
-	if (!str || !*str)
-		return (free(str), str = NULL, NULL);
-	res = remove_overflow(str);
+	if (!str[fd] || *str[fd] == '\0')
+		return (free(str[fd]), str[fd] = NULL, NULL);
+	res = remove_overflow(str[fd]);
 	if (!res)
-		return (free(str), str = NULL, NULL);
-	str = start_next_line(str);
+		return (free(str[fd]), str[fd] = NULL, NULL);
+	str[fd] = start_next_line(str[fd]);
 	return (res);
 }
+
+// #include <stdio.h>
+// int main(int ac, char **av)
+// {
+
+// 	printf("%s",get_next_line(0));
+// }
